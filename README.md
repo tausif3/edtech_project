@@ -1,2 +1,2 @@
-# Q-A-repository-for-K-12-students
-this is a hobby project with an aim to build a repository of quality content for k-12 students in india.
+# trying to solve some of the problems in edtech space
+Making education as fun as watching netflix or playing playstation!
