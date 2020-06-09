@@ -5,6 +5,8 @@ from django.contrib.auth.models import AbstractUser
 # extending default django user model
 class User(AbstractUser):
     birth_date = models.DateField(null=True, blank=True)
+    educator = models.BooleanField(default=False)
+    student = models.BooleanField(default=False)
 
     def __str__(self):
         return self.username

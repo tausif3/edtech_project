@@ -10,7 +10,9 @@ class User_Serializer(serializers.ModelSerializer):
         user = User.objects.create(username=validated_data['username'],
                                         email=validated_data['email'],
                                         first_name=validated_data['first_name'],
-                                        last_name=validated_data['last_name'],)
+                                        last_name=validated_data['last_name'],
+                                        educator=validated_data.get('educator',False),
+                                        student=validated_data.get('student',False))
         user.set_password(validated_data['password'])
         user.save()
         return user
@@ -25,6 +27,7 @@ class SignUpEducator_Serializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
+        user_data['educator']=True
         # (new learning) passing serializer class this way
         user_obj = User_Serializer.create(User_Serializer(),validated_data=user_data)
         validated_data['user_id'] = user_obj.id
@@ -41,6 +44,7 @@ class SignUpStudent_Serializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
+        user_data['student'] = True
         user_obj = User_Serializer.create(User_Serializer(),validated_data=user_data)
         validated_data['user_id'] = user_obj.id
         student = StudentInfo.objects.create(**validated_data)
