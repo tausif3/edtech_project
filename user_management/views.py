@@ -1,7 +1,8 @@
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect
+# from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from .serializers import SignUpStudent_Serializer,SignUpEducator_Serializer
+from .models import User
 from rest_framework import status
 from rest_framework.decorators import api_view
 import requests
@@ -11,7 +12,7 @@ from . import constants
 
 
 def index(request):
-    # test view
+    # test view for experiments
     return HttpResponse("hello world")
 
 
@@ -46,18 +47,24 @@ def login_student(request):
     username = request.data['username']
     password = request.data['password']
 
+    # check whether 'user' is an educator or student
+    user_type = User.objects.get(username=username)
+    if user_type.educator:
+        return JsonResponse({"message": "student access only"})
+
     payload = {'username': username, 'password': password}
     headers = {'content-type': 'application/json'}
 
+    # jwt library does authentication internally and then generates a token based on user credentials
     obtain_jwt_token = requests.post(url='http://127.0.0.1:8000/api/token/', data=json.dumps(payload), headers=headers)
     if obtain_jwt_token.status_code == 200:
         data = json.loads(obtain_jwt_token.text)
-        redis_token = user_utils.setex_jwt_token(username=username,
+        redis_token = user_utils.setex_jwt_token(token=data['access'],
                                                  time=constants.REDIS_CONSTANTS['TIMEOUT'],
-                                                 token=data['access'])
+                                                 username=username,)
 
         if redis_token:
-            return JsonResponse({"sucess": data})
+            return JsonResponse({"success": data})
     else:
         return JsonResponse({"message": obtain_jwt_token.reason}, status=obtain_jwt_token.status_code)
 
@@ -68,19 +75,66 @@ def login_educator(request):
     username = request.data['username']
     password = request.data['password']
 
+    # check whether 'user' is an educator or student
+    user_type = User.objects.get(username=username)
+    if user_type.student:
+        return JsonResponse({"message": "educator access only"})
+
     payload = {'username': username, 'password': password}
     headers = {'content-type': 'application/json'}
 
+    # jwt library does authentication internally and then generates a token based on user credentials
     obtain_jwt_token = requests.post(url='http://127.0.0.1:8000/api/token/', data=json.dumps(payload), headers=headers)
     if obtain_jwt_token.status_code == 200:
         data = json.loads(obtain_jwt_token.text)
-        redis_token = user_utils.setex_jwt_token(username=username,
+
+        redis_token = user_utils.setex_jwt_token(token=data['access'],
                                                  time=constants.REDIS_CONSTANTS['TIMEOUT'],
-                                                 token=data['access'],)
+                                                 username=username,)
 
         if redis_token:
-            return JsonResponse({"sucess": data})
+            return JsonResponse({"success": data})
     else:
         return JsonResponse({"message": obtain_jwt_token.reason}, status=obtain_jwt_token.status_code)
+
+
+@csrf_exempt
+@api_view(['POST'])
+def new_access_token(request):
+    """
+    API for obtaining new access token for given refresh token ( 1 day expiration time of refresh token)
+
+    :param request:
+    :return: new access token
+    """
+
+    payload = {'refresh': request.data['refresh']}
+    headers = {'content-type': 'application/json'}
+
+    access_token = requests.post(url='http://127.0.0.1:8000/api/token/refresh/',
+                                     data=json.dumps(payload), headers=headers)
+
+    if access_token.status_code == 200:
+        data = json.loads(access_token.text)
+        return JsonResponse({"success": data})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

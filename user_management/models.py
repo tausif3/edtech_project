@@ -17,7 +17,7 @@ class StudentInfo(models.Model):
     student_class = models.IntegerField(blank=True)
 
     def __str__(self):
-        return "student :%s",self.user
+        return "student :%s", self.user
 
 
 class EducatorInfo(models.Model):
@@ -26,5 +26,5 @@ class EducatorInfo(models.Model):
     educator_mobile_number = models.CharField(max_length=30, blank=False)
 
     def __str__(self):
-        return "educator is:%s",self.user
+        return "educator :%s", self.user
 
