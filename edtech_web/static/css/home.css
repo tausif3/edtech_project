@@ -1,0 +1,34 @@
+.content-box {
+    background-color: #17171d;
+    height: 600px;
+    line-height: 600px;
+    width: 100%;
+    color: white;
+}
+
+.content-box.white {
+    background-color: white;
+    color: #17171d;
+}
+
+.main-header {
+    text-align: center;
+}
+
+.main-header .company-name {
+    color: white;
+    letter-spacing: 2px;
+    font-size: 130px;
+    font-weight: bold;
+}
+
+@media(max-width: 800px) {
+    .content-box {
+        height: 400px;
+        line-height: 400px;
+    }
+    
+    .main-header .company-name {
+        font-size: 62px;
+    }    
+}

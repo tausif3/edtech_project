@@ -2,11 +2,16 @@
 {% load static %}
 
 {% block css %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
-    This is edTech Home
+    <div class="content-box main-header">
+        <span class="company-name">
+            edTech.
+        </span>
+    </div>
 {% endblock %}
 
 {% block script%}
