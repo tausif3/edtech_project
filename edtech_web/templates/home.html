@@ -1,5 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
 
 {% block content %}
     This is edTech Home
 {% endblock %}
+
+{% block script%}
+<script src="{% static 'js/vanilla/home.js' %}"></script>
+{% endblock %}
+
