@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content-box main-header">
+        <span class="company-name">
+            edTech.
+        </span>
+    </div>
+{% endblock %}
+
+{% block script%}
+<script src="{% static 'js/vanilla/home.js' %}"></script>
+{% endblock %}
+

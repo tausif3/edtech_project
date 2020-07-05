@@ -57,7 +57,7 @@ ROOT_URLCONF = 'edtech_web.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'edtech_web/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,16 +76,10 @@ WSGI_APPLICATION = 'edtech_web.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'edtech_db',
-        'USER':'db_user',
-        'PASSWORD':'db_user123',
-        'HOST': 'localhost',
-    }
-}
-
+if DEBUG:
+    from .development import *
+else:
+    from .production import *
 
 AUTH_USER_MODEL = 'user_management.User'
 
@@ -147,3 +141,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '../static')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "edtech_web/static"),
+)
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
