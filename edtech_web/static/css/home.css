@@ -1,18 +1,28 @@
 .content-box {
     background-color: #17171d;
     height: 600px;
-    line-height: 600px;
     width: 100%;
     color: white;
+    display: grid;
+    align-items: center;
 }
 
-.content-box.white {
+.content-box:nth-child(2) {
     background-color: white;
     color: #17171d;
 }
 
+.content-box .info {
+    text-align: center;
+    line-height: 80px;
+    font-size: 64px;
+    font-weight: 500;
+    margin: 0px 22px;
+}
+
 .main-header {
     text-align: center;
+    line-height: 600px;
 }
 
 .main-header .company-name {
@@ -25,6 +35,15 @@
 @media(max-width: 800px) {
     .content-box {
         height: 400px;
+    }
+
+    .content-box .info {
+        text-align: center;
+        line-height: 30px;
+        font-size: 24px;
+    }
+
+    .main-header {
         line-height: 400px;
     }
     
